@@ -4,9 +4,9 @@
   var values = {
   "NUVIO_SUPABASE_URL": "https://api.nuvio.tv",
   "NUVIO_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzgxNTIxMzQ2LCJleHAiOjE5MzkyMDEzNDZ9.tmQaj682pwzehpqlgCDMnySOqiUvpgRbrE43T4VJpDI",
+  "NUVIO_SUPABASE_FALLBACK_URL": "https://api-two.nuvioapp.space",
   "TV_LOGIN_WEB_BASE_URL": "https://nuvio.tv/tv-login",
   "YOUTUBE_PROXY_URL": "youtube-proxy.html",
-  "PARENTAL_GUIDE_API_URL": "",
   "INTRODB_API_URL": "https://api.introdb.app/",
   "IMDB_RATINGS_API_BASE_URL": "https://seriesgraph.com/",
   "IMDB_TAPFRAME_API_BASE_URL": "https://imdb.tapframe.space/",
@@ -22,7 +22,8 @@
   "TRAKT_REDIRECT_URI": "urn:ietf:wg:oauth:2.0:oob",
   "SIMKL_CLIENT_ID": "dc20e0db975583b15096267cee79cd23b1f56d4bd301ce3c51e4a96a49c834a6",
   "SIMKL_API_URL": "https://api.simkl.com",
-  "SIMKL_APP_NAME": "nuvio"
+  "SIMKL_APP_NAME": "nuvio",
+  "PREMIUMIZE_CLIENT_ID": "450935904"
 };
   for (var key in values) {
     if (Object.prototype.hasOwnProperty.call(values, key)) {
