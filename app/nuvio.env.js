@@ -18,10 +18,7 @@
   "TMDB_API_KEY": "01926d2187b6a5d861eefc750e9df3e3",
   "TRAKT_CLIENT_ID": "5783db7c46a5b22f072d4b224f9bd7dc2cbaba66dbe3515d1feb59e3ca72394c",
   "TRAKT_CLIENT_SECRET": "bf6e7561dafee902f5a2a67d2b31feac1563632f331f3958c978aff6389ea384",
-  "TRAKT_API_URL": "https://api.trakt.tv",
-  "TRAKT_REDIRECT_URI": "urn:ietf:wg:oauth:2.0:oob",
   "SIMKL_CLIENT_ID": "dc20e0db975583b15096267cee79cd23b1f56d4bd301ce3c51e4a96a49c834a6",
-  "SIMKL_API_URL": "https://api.simkl.com",
   "SIMKL_APP_NAME": "nuvio",
   "PREMIUMIZE_CLIENT_ID": "450935904"
 };
