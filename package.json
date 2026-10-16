@@ -1,7 +1,7 @@
 {
   "name": "nuvio-tv-tizen-beta",
-  "version": "0.3.37-beta",
-  "description": "Self-contained Nuvio beta module for TizenBrew, updated from NuvioMedia/NuvioWeb prereleases.",
+  "version": "1.2.5",
+  "description": "Self-contained Nuvio TV module for TizenBrew, updated from the latest NuvioMedia/NuvioTVSmart release.",
   "appName": "Nuvio TV Beta",
   "packageType": "app",
   "appPath": "app/index.html",

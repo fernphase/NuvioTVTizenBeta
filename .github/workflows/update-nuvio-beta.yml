@@ -1,4 +1,4 @@
-name: Update Nuvio beta
+name: Update Nuvio
 
 on:
   workflow_dispatch:
@@ -8,17 +8,21 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: update-nuvio
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           persist-credentials: true
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "22"
 
@@ -31,9 +35,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add app package.json .nuvio-beta-version
+          git add app icon.png package.json .nuvio-beta-version
           if git diff --cached --quiet; then
-            echo "No Nuvio beta update found."
+            echo "No Nuvio update found."
           else
             VERSION="$(cat .nuvio-beta-version)"
             git commit -m "Bundle Nuvio ${VERSION} for TizenBrew"

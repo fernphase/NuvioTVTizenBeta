@@ -1,4 +1,8 @@
 window.__NUVIO_PLATFORM__ = "tizen";
+window.__NUVIO_TIZEN_ENGINEFS_SERVICE_ENABLED__ = false;
+window.__NUVIO_TIZEN_ENGINEFS_SERVICE_ID__ = "NuvioTV001.EngineFsService";
+window.__NUVIO_TIZEN_PLUGIN_SERVICE_ENABLED__ = false;
+window.__NUVIO_TIZEN_PLUGIN_SERVICE_ID__ = "NuvioTV001.PluginService";
 
 var tvInput = window.tizen && window.tizen.tvinputdevice;
 if (tvInput && typeof tvInput.registerKey === "function") {
@@ -38,13 +42,12 @@ function loadScript(src) {
 
 function startNuvioApp() {
   loadScript("nuvio.env.js");
-  loadScript("js/runtime/env.js");
   loadScript("assets/libs/qrcode-generator.js");
   loadScript("app.bundle.js");
 }
 
 if (window.NuvioBootGuard && typeof window.NuvioBootGuard.runCompatibilityGate === "function") {
-  window.NuvioBootGuard.runCompatibilityGate({"platform":"tizen","minVersion":5,"minChrome":63,"requiredLabel":"Samsung Tizen 5.0+ · Chromium 63+ (2019+)"}, startNuvioApp);
+  window.NuvioBootGuard.runCompatibilityGate({"platform":"tizen","minVersion":4,"minChrome":56,"requiredLabel":"Samsung Tizen 4.0+ · Chromium 56+ (2018+)"}, startNuvioApp);
 } else {
   startNuvioApp();
 }
