@@ -96,6 +96,21 @@ function toTizenBrewMainJs(source) {
   return source.replace(/(__NUVIO_TIZEN_\w+_SERVICE_ENABLED__\s*=\s*)true/g, "$1false");
 }
 
+// AVPlay (webapis.avplay) is unavailable under TizenBrew. For remote files on Tizen the
+// bundle offers only AVPlay, never HTML5 <video> ("native-file"):
+// `(!isTizen||!isRemote)&&push("native-file")`, so playback fails before it starts.
+// Also offer "native-file" when AVPlay is unsupported, as releases before 1.x did.
+function toTizenBrewBundle(source) {
+  const pattern =
+    /(let (\w+)=\[\],(\w+)=this\.isRemoteDirectHttpSource\(\w+\);return (\w+)&&(\w+)&&(\w+)\(\2,\w+\),\(!\4\|\|!\3)\)&&\6\(\2,"native-file"\)/;
+  if (!pattern.test(source)) {
+    throw new Error("Official app.bundle.js changed shape; update toTizenBrewBundle().");
+  }
+  return source.replace(pattern, (match, head, list, remote, tizen, avplay, push) =>
+    `${head}||!${avplay})&&${push}(${list},"native-file")`
+  );
+}
+
 async function patchPackageJson(version) {
   const packagePath = path.join(repoRoot, "package.json");
   const packageJson = JSON.parse(await readFile(packagePath, "utf8"));
@@ -133,6 +148,7 @@ async function main() {
 
     const indexHtml = toTizenBrewIndexHtml(await readFile(path.join(wgtDir, "index.html"), "utf8"));
     const mainJs = toTizenBrewMainJs(await readFile(path.join(wgtDir, "main.js"), "utf8"));
+    const bundleJs = toTizenBrewBundle(await readFile(path.join(wgtDir, "app.bundle.js"), "utf8"));
 
     await rm(appDir, { recursive: true, force: true });
     await cp(wgtDir, appDir, {
@@ -141,6 +157,7 @@ async function main() {
     });
     await writeFile(path.join(appDir, "index.html"), indexHtml);
     await writeFile(path.join(appDir, "main.js"), mainJs);
+    await writeFile(path.join(appDir, "app.bundle.js"), bundleJs);
     await cp(path.join(wgtDir, "icon.png"), path.join(repoRoot, "icon.png"));
 
     await patchPackageJson(tag);
