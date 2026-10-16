@@ -78,14 +78,13 @@ async function downloadVerified(asset, destination) {
   await writeFile(destination, bytes);
 }
 
-// The official entry page loads Tizen widget-only APIs ($WEBAPIS and the wrt:service
-// module). TizenBrew runs the app as a plain web page, so drop them.
+// The official entry page loads the wrt:service module, which only exists in an installed
+// widget; drop it. Keep the $WEBAPIS script: TizenBrew's own page loads it too, and it is
+// what exposes webapis.avplay. If it doesn't resolve, the app falls back to HTML5 <video>.
 function toTizenBrewIndexHtml(html) {
-  const result = html
-    .replace(/[ \t]*<script src="\$WEBAPIS\/[^"]*"><\/script>\r?\n/g, "")
-    .replace(/[ \t]*<script type="module">[\s\S]*?wrt:service[\s\S]*?<\/script>\r?\n/g, "");
+  const result = html.replace(/[ \t]*<script type="module">[\s\S]*?wrt:service[\s\S]*?<\/script>\r?\n/g, "");
 
-  if (result.includes("$WEBAPIS") || result.includes("wrt:service")) {
+  if (result.includes("wrt:service")) {
     throw new Error("Official index.html changed shape; update toTizenBrewIndexHtml().");
   }
   return result;
@@ -96,7 +95,7 @@ function toTizenBrewMainJs(source) {
   return source.replace(/(__NUVIO_TIZEN_\w+_SERVICE_ENABLED__\s*=\s*)true/g, "$1false");
 }
 
-// AVPlay (webapis.avplay) is unavailable under TizenBrew. For remote files on Tizen the
+// AVPlay (webapis.avplay) may be unavailable under TizenBrew. For remote files on Tizen the
 // bundle offers only AVPlay, never HTML5 <video> ("native-file"):
 // `(!isTizen||!isRemote)&&push("native-file")`, so playback fails before it starts.
 // Also offer "native-file" when AVPlay is unsupported, as releases before 1.x did.
