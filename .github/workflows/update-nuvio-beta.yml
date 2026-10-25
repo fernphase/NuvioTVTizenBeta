@@ -31,6 +31,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Point TorBox at LAN proxy
+        run: |
+          sed -i 's#https://api.torbox.app/#http://192.168.0.182:8097/#g' app/app.bundle.js
+          grep -q 'http://192.168.0.182:8097/' app/app.bundle.js
+
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
