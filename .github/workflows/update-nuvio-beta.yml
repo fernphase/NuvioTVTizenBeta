@@ -43,6 +43,11 @@ jobs:
           git add app icon.png package.json .nuvio-beta-version
           if git diff --cached --quiet; then
             echo "No Nuvio update found."
+            # GitHub disables schedules after 60 days without repo activity; commit before that.
+            if [ $(( $(date +%s) - $(git log -1 --format=%ct) )) -gt $(( 45 * 86400 )) ]; then
+              git commit --allow-empty -m "Keepalive: no Nuvio update for 45 days"
+              git push
+            fi
           else
             VERSION="$(cat .nuvio-beta-version)"
             git commit -m "Bundle Nuvio ${VERSION} for TizenBrew"
