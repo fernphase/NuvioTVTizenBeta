@@ -1,6 +1,6 @@
 {
   "name": "nuvio-tv-tizen-beta",
-  "version": "1.3.9",
+  "version": "1.3.10",
   "description": "Self-contained Nuvio TV module for TizenBrew, updated from the latest NuvioMedia/NuvioTVSmart release.",
   "appName": "Nuvio TV",
   "packageType": "app",

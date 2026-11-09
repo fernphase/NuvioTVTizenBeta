@@ -6,9 +6,13 @@ window.__NUVIO_TIZEN_PLUGIN_SERVICE_ID__ = "NuvioTV001.PluginService";
 
 var tvInput = window.tizen && window.tizen.tvinputdevice;
 if (tvInput && typeof tvInput.registerKey === "function") {
+  // Registered once here, before the app bundle loads, so the keys work during
+  // the compatibility gate. The Tizen adapter skips its own registration when
+  // this flag is set (the two lists used to overlap on eight media keys).
   [
     "Back",
     "Return",
+    "Info",
     "MediaPlay",
     "MediaPause",
     "MediaPlayPause",
@@ -22,6 +26,7 @@ if (tvInput && typeof tvInput.registerKey === "function") {
       tvInput.registerKey(keyName);
     } catch (_) {}
   });
+  window.__NUVIO_TIZEN_MEDIA_KEYS_REGISTERED__ = true;
 }
 
 function loadScript(src) {
@@ -42,7 +47,7 @@ function loadScript(src) {
 
 function startNuvioApp() {
   loadScript("nuvio.env.js");
-  loadScript("assets/libs/qrcode-generator.js");
+  // assets/libs/qrcode-generator.js is loaded on demand by the QR screens.
   loadScript("app.bundle.js");
 }
 
