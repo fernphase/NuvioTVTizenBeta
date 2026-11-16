@@ -99,9 +99,10 @@ function toTizenBrewMainJs(source) {
 // bundle offers only AVPlay, never HTML5 <video> ("native-file"):
 // `(!isTizen||!isRemote)&&push("native-file")`, so playback fails before it starts.
 // Also offer "native-file" when AVPlay is unsupported, as releases before 1.x did.
+// Minified names may contain "$" (1.4.2 named a variable `$`), so match them with [\w$]+.
 function toTizenBrewBundle(source) {
   const pattern =
-    /(let (\w+)=\[\],(\w+)=this\.isRemoteDirectHttpSource\(\w+\);return (\w+)&&(\w+)&&(\w+)\(\2,\w+\),\(!\4\|\|!\3)\)&&\6\(\2,"native-file"\)/;
+    /(let ([\w$]+)=\[\],([\w$]+)=this\.isRemoteDirectHttpSource\([\w$]+\);return ([\w$]+)&&([\w$]+)&&([\w$]+)\(\2,[\w$]+\),\(!\4\|\|!\3)\)&&\6\(\2,"native-file"\)/;
   if (!pattern.test(source)) {
     throw new Error("Official app.bundle.js changed shape; update toTizenBrewBundle().");
   }
@@ -112,7 +113,7 @@ function toTizenBrewBundle(source) {
   // AVPlay can also be exposed yet fail to open (the TV's webapis is reachable but the
   // TizenBrew widget can't drive it). For remote files the bundle then errors out instead
   // of falling through to HTML5 <video> as it does for local ones; make it fall through.
-  const giveUp = /if\((\w+)\.isTizen\(\)&&(\w+)==="native-file"&&this\.isRemoteDirectHttpSource\((\w+)\)\)\{(?=if\(!this\.isPlaybackRequestActive\()/;
+  const giveUp = /if\(([\w$]+)\.isTizen\(\)&&([\w$]+)==="native-file"&&this\.isRemoteDirectHttpSource\(([\w$]+)\)\)\{(?=if\(!this\.isPlaybackRequestActive\()/;
   if (!giveUp.test(patched)) {
     throw new Error("Official app.bundle.js changed shape (AVPlay give-up); update toTizenBrewBundle().");
   }
